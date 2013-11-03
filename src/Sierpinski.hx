@@ -57,9 +57,11 @@ class Sierpinski extends Entity {
     addGraphic(np_text);
 
     var desc:String = "Press A to increase speed and S to decrease. Press R ";
-    desc += "to reset the image";
+    desc += "to reset the image.\n";
+    desc += "Abel Soares Siqueira\n";
+    desc += "https://github.com/abelsiqueira/sierpinski";
     var text_opt:TextOptions = { wordWrap:true, color:0xffffff, size:18};
-    var description:Text = new Text(desc, 10, height-50, width-40, 50, text_opt);
+    var description:Text = new Text(desc, 10, height-100, width-40, 200, text_opt);
     addGraphic(description);
   }
 
