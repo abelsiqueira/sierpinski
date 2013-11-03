@@ -19,3 +19,8 @@ Install haxe, then
 ## License
 
 GPLv3, see LICENSE
+
+## Assets
+
+Images from the Tango Project
+    http://tango.freedesktop.org/Tango_Icon_Library

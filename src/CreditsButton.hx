@@ -11,8 +11,8 @@ class CreditsButton extends Entity {
     super();
 
     var image:Image = new Image("gfx/help.png");
-    x = HXP.width - image.width;
-    y = 0;
+    x = 2;
+    y = 2;
 
     setHitbox(image.width, image.height);
 

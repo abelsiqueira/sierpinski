@@ -16,7 +16,7 @@ class Main extends Engine {
   }
 
   override public function new() {
-    super(640, 640, 60, false);
+    super(900, 640, 60, false);
   }
 
   public static function main() { new Main(); }

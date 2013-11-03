@@ -4,10 +4,14 @@ import com.haxepunk.graphics.Text;
 
 class TheScene extends Scene {
 
+  private var sierpinski:Sierpinski;
+
   public function new() {
     super();
-    add(new Sierpinski());
+    sierpinski = new Sierpinski();
+    add(sierpinski);
     add(new CreditsButton());
+    add(new Menu(sierpinski));
   }
 
   public override function update() {
