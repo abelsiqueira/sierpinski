@@ -16,7 +16,7 @@ class Credits extends Scene {
   public override function update() {
     super.update();
 
-    if (Input.pressed(Key.ANY)) {
+    if (Input.pressed(Key.ANY) || Input.mousePressed) {
       HXP.scene = new TheScene();
     }
 

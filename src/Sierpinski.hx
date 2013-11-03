@@ -15,10 +15,11 @@ class Sierpinski extends Entity {
   private var bx:Array<Float>;
   private var by:Array<Float>;
 
-  private var pto_x:Float;
-  private var pto_y:Float;
+  private var pto_x:Array<Float>;
+  private var pto_y:Array<Float>;
 
   private var psize:Int = 1;
+  private var no_vertex:Int = 3;
 
   private var speed:Float = 1;
   private var accul:Float = 0;
@@ -42,14 +43,6 @@ class Sierpinski extends Entity {
     np_text.y = 10;
     np_text.size = 18;
 
-    bx = new Array<Float>();
-    by = new Array<Float>();
-
-    for (i in 0...3) {
-      bx.push(width/2 + Math.sin(i*2.0*3.14/3.0)*Math.min(width,height)*0.45);
-      by.push(width/2 - Math.cos(i*2.0*3.14/3.0)*Math.min(width,height)*0.45);
-    }
-
     clear_drawing();
 
     addGraphic(canvas);
@@ -66,12 +59,23 @@ class Sierpinski extends Entity {
   }
 
   private function clear_drawing() {
+    bx = new Array<Float>();
+    by = new Array<Float>();
+
+    for (i in 0...no_vertex) {
+      bx.push(width/2 + Math.sin(i*2.0*3.14/no_vertex)*Math.min(width,height)*0.45);
+      by.push(width/2 - Math.cos(i*2.0*3.14/no_vertex)*Math.min(width,height)*0.45);
+    }
     canvas.fill(new Rectangle(0,0,width,height), 0);
-    for (i in 0...3)
+    for (i in 0...no_vertex)
       canvas.fill(new Rectangle(bx[i], by[i], psize, psize), 0xff0000);
-    np = 3;
-    pto_x = width/2;
-    pto_y = height/2;
+    np = no_vertex;
+    pto_x = new Array<Float>();
+    pto_y = new Array<Float>();
+    for (i in 0...no_vertex-2) {
+      pto_x.push(width/2);
+      pto_y.push(height/2);
+    }
   }
 
   override public function update() {
@@ -80,10 +84,19 @@ class Sierpinski extends Entity {
     accul += speed;
 
     while (accul > 1) {
-      var r:Int = Std.random(3);
-      canvas.fill(new Rectangle(pto_x, pto_y, psize, psize), 0xff0000);
-      pto_x = (pto_x + bx[r])/2;
-      pto_y = (pto_y + by[r])/2;
+      for (i in 0...no_vertex-2) {
+        var r:Int = Std.random(3);
+        if (r == 0) {
+          pto_x[i] += bx[0];
+          pto_y[i] += by[0];
+        } else {
+          pto_x[i] += bx[i+r];
+          pto_y[i] += by[i+r];
+        }
+        pto_x[i] /= 2;
+        pto_y[i] /= 2;
+        canvas.fill(new Rectangle(pto_x[i], pto_y[i], psize, psize), 0xff0000);
+      }
       accul -= 1;
       np++;
     }
@@ -97,6 +110,13 @@ class Sierpinski extends Entity {
       speed /= 2;
       speed_text.text = "speed = " + Std.string(Math.round((Math.log(speed)/0.69315)));
     } else if (Input.pressed(Key.R)) {
+      clear_drawing();
+    } else if (Input.pressed(Key.P)) {
+      no_vertex++;
+      clear_drawing();
+    } else if (Input.pressed(Key.O)) {
+      if (no_vertex > 3)
+        no_vertex--;
       clear_drawing();
     }
   }
