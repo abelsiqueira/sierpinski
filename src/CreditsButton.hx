@@ -27,6 +27,7 @@ class CreditsButton extends Entity {
       var my:Int = Input.mouseY;
       if (collidePoint(x, y, mx, my)) {
         HXP.scene = new Credits();
+        Main.submit("SawCredits",1);
       }
     }
   }

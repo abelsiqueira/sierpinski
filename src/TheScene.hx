@@ -1,6 +1,7 @@
 import com.haxepunk.Scene;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Text;
+import kong.KongregateApi;
 
 class TheScene extends Scene {
 
@@ -12,6 +13,10 @@ class TheScene extends Scene {
     add(sierpinski);
     add(new CreditsButton());
     add(new Menu(sierpinski));
+
+#if online
+    Main.submit("GameStarted", 1);
+#end
   }
 
   public override function update() {
