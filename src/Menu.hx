@@ -19,6 +19,7 @@ class Menu extends Entity {
   private var speed_p_rect:Rectangle;
   private var speed_m_rect:Rectangle;
   private var refresh_rect:Rectangle;
+  private var click_rect:Rectangle;
 
   private var sierpinski:Sierpinski;
 
@@ -32,6 +33,7 @@ class Menu extends Entity {
     var speed_plus:Image;
     var speed_minus:Image;
     var refresh:Image;
+    var click:Image;
 
     var d:Int = 15;
 
@@ -63,16 +65,17 @@ class Menu extends Entity {
     speed_plus = new Image("gfx/plus.png");
     speed_minus = new Image("gfx/minus.png");
     refresh = new Image("gfx/refresh.png");
+    click = new Image("gfx/click.png");
 
     var w:Int = np_plus.width;
     var h:Int = np_plus.height;
 
-    speed_p_rect = new Rectangle(HXP.height+d, 150, w, h);
-    speed_m_rect = new Rectangle(HXP.width - w - d, 150, w, h);
-    np_p_rect = new Rectangle(HXP.height+d, 350, w, h);
-    np_m_rect = new Rectangle(HXP.width - w - d, 350, w, h);
-    refresh_rect = new Rectangle(HXP.halfHeight+HXP.halfWidth - w/2,
-        HXP.height-h, w, h);
+    speed_p_rect = new Rectangle(HXP.width - w - d, 150, w, h);
+    speed_m_rect = new Rectangle(HXP.height+d, 150, w, h);
+    np_p_rect = new Rectangle(HXP.width - w - d, 350, w, h);
+    np_m_rect = new Rectangle(HXP.height+d, 350, w, h);
+    refresh_rect = new Rectangle(HXP.width - w - d, HXP.height-h-d, w, h);
+    click_rect = new Rectangle(HXP.height + d, HXP.height-h-d, w, h);
 
     np_plus.x = np_p_rect.x;
     np_plus.y = np_p_rect.y;
@@ -84,12 +87,15 @@ class Menu extends Entity {
     speed_minus.y = speed_m_rect.y;
     refresh.x = refresh_rect.x;
     refresh.y = refresh_rect.y;
+    click.x = click_rect.x;
+    click.y = click_rect.y;
 
     addGraphic(np_plus);
     addGraphic(np_minus);
     addGraphic(speed_plus);
     addGraphic(speed_minus);
     addGraphic(refresh);
+    addGraphic(click);
     addGraphic(speed_text);
     addGraphic(np_text);
     addGraphic(nv_text);
@@ -128,6 +134,8 @@ class Menu extends Entity {
       Main.submit("Refreshed",1);
 #end
       sierpinski.clear_drawing();
+    } else if (click_rect.contains(mx, my)) {
+      sierpinski.waitForClick();
     }
   }
 

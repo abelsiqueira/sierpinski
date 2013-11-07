@@ -28,6 +28,8 @@ class Sierpinski extends Entity {
   private var np:Int = 0;
   private var radius:Int;
 
+  private var wfc:Bool = false;
+
   public function new() {
     super();
 
@@ -55,11 +57,14 @@ class Sierpinski extends Entity {
     }
 
     np = no_vertex;
-    pto_x = new Array<Float>();
-    pto_y = new Array<Float>();
-    for (i in 0...no_vertex-2) {
-      pto_x.push(2+radius);
-      pto_y.push(2+radius);
+
+    if (!wfc) {
+      pto_x = new Array<Float>();
+      pto_y = new Array<Float>();
+      for (i in 0...no_vertex-2) {
+        pto_x.push(2+radius);
+        pto_y.push(2+radius);
+      }
     }
 
     canvas.fill(new Rectangle(0,0,width,2), 0xffffff);
@@ -72,38 +77,54 @@ class Sierpinski extends Entity {
   override public function update() {
     var i:Int;
 
-    if (speed > min_speed) {
-      accul += Math.exp(speed);
+    if (wfc) {
+      if (Input.mousePressed) {
+        var mx:Int = Input.mouseX;
+        var my:Int = Input.mouseY;
 
-      while (accul > 1) {
-        for (i in 0...no_vertex-2) {
-          var r:Int = Std.random(3);
-          if (r == 0) {
-            pto_x[i] += bx[0];
-            pto_y[i] += by[0];
-          } else {
-            pto_x[i] += bx[i+r];
-            pto_y[i] += by[i+r];
-          }
-          pto_x[i] /= 2;
-          pto_y[i] /= 2;
-          canvas.fill(new Rectangle(pto_x[i], pto_y[i], psize, psize), 0xff0000);
-        }
-        accul -= 1;
-        np++;
+        if (mx > HXP.height)
+          return;
+
+        pto_x = new Array<Float>();
+        pto_y = new Array<Float>();
+        pto_x.push(mx);
+        pto_y.push(my);
+        wfc = false;
       }
-    }
+    } else {
+      if (speed > min_speed) {
+        accul += Math.exp(speed);
 
-    if (Input.pressed(Key.A)) {
-      increaseSpeed();
-    } else if (Input.pressed(Key.S)) {
-      decreaseSpeed();
-    } else if (Input.pressed(Key.R)) {
-      clear_drawing();
-    } else if (Input.pressed(Key.P)) {
-      increaseNV();
-    } else if (Input.pressed(Key.O)) {
-      decreaseNV();
+        while (accul > 1) {
+          for (i in 0...no_vertex-2) {
+            canvas.fill(new Rectangle(pto_x[i], pto_y[i], psize, psize), 0xff0000);
+            var r:Int = Std.random(3);
+            if (r == 0) {
+              pto_x[i] += bx[0];
+              pto_y[i] += by[0];
+            } else {
+              pto_x[i] += bx[i+r];
+              pto_y[i] += by[i+r];
+            }
+            pto_x[i] /= 2;
+            pto_y[i] /= 2;
+          }
+          accul -= 1;
+          np++;
+        }
+      }
+
+      if (Input.pressed(Key.A)) {
+        increaseSpeed();
+      } else if (Input.pressed(Key.S)) {
+        decreaseSpeed();
+      } else if (Input.pressed(Key.R)) {
+        clear_drawing();
+      } else if (Input.pressed(Key.P)) {
+        increaseNV();
+      } else if (Input.pressed(Key.O)) {
+        decreaseNV();
+      }
     }
   }
 
@@ -157,6 +178,11 @@ class Sierpinski extends Entity {
   
   public function getNP() : String {
     return Std.string(np);
+  }
+
+  public function waitForClick() {
+    wfc = true;
+    clear_drawing();
   }
 
 }
