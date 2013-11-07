@@ -13,7 +13,7 @@
 
 	<haxelib name="openfl" />
 	<haxelib name="HaxePunk" />
-  <haxelib name="kong.hx" />
+  <haxelib name="kong.hx" if="flash"/>
 
 	<assets path="assets/graphics" rename="gfx" include="*.png|*.jpg" />
 	<assets path="assets/audio" rename="sfx" include="*.mp3" if="flash" />

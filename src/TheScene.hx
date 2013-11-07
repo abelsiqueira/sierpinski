@@ -1,7 +1,6 @@
 import com.haxepunk.Scene;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Text;
-import kong.KongregateApi;
 
 class TheScene extends Scene {
 

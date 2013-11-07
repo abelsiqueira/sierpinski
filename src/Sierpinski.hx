@@ -110,27 +110,35 @@ class Sierpinski extends Entity {
   public function increaseSpeed() {
     if (speed < max_speed)
       speed++;
+#if online
     Main.submit("MaxSpeed", speed);
+#end
   }
 
   public function decreaseSpeed() {
     if (speed > min_speed)
       speed--;
+#if online
     Main.submit("MinSpeed", speed);
+#end
   }
 
   public function increaseNV() {
     if (no_vertex < max_no_vertex)
       no_vertex++;
     clear_drawing();
+#if online
     Main.submit("MaxNoVertex", no_vertex);
+#end
   }
 
   public function decreaseNV() {
     if (no_vertex > 3)
       no_vertex--;
     clear_drawing();
+#if online
     Main.submit("MinNoVertex", no_vertex);
+#end
   }
 
   public function getSpeedFrac() : Float {

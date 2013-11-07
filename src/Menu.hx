@@ -124,7 +124,9 @@ class Menu extends Entity {
     } else if (speed_m_rect.contains(mx, my)) {
       sierpinski.decreaseSpeed();
     } else if (refresh_rect.contains(mx, my)) {
+#if online
       Main.submit("Refreshed",1);
+#end
       sierpinski.clear_drawing();
     }
   }

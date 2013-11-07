@@ -3,11 +3,15 @@ import com.haxepunk.Engine;
 import com.haxepunk.HXP;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
+#if online
 import kong.*;
+#end
 
 class Main extends Engine {
 
+#if online
   private static var kong:KongregateApi;
+#end
 
   override public function init() {
 #if online
@@ -36,6 +40,7 @@ class Main extends Engine {
     kong.services.connect();
 #end
 #if debug
+    trace("onLoad()");
     HXP.console.enable();
     HXP.console.toggleKey = Key.E;
 #end
@@ -53,6 +58,9 @@ class Main extends Engine {
     super(900, 640, 60, false);
   }
 
-  public static function main() { new Main(); }
+  public static function main() { 
+    trace("main");
+    new Main(); 
+  }
 
 }
