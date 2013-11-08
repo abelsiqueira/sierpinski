@@ -21,8 +21,8 @@ class Sierpinski extends Entity {
   private var max_no_vertex:Int = 20;
   private var no_vertex:Int = 3;
 
-  private var min_speed:Int = -4;
-  private var max_speed:Int = 6;
+  private var min_speed:Int = -6;
+  private var max_speed:Int = 8;
   private var speed:Int = 0;
   private var accul:Float = 0;
   private var np:Int = 0;
@@ -90,6 +90,7 @@ class Sierpinski extends Entity {
         pto_x.push(mx);
         pto_y.push(my);
         wfc = false;
+        accul = 1;
       }
     } else {
       if (speed > min_speed) {
@@ -178,6 +179,10 @@ class Sierpinski extends Entity {
   
   public function getNP() : String {
     return Std.string(np);
+  }
+
+  public function setThickness(p:Int) {
+    psize = p;
   }
 
   public function waitForClick() {

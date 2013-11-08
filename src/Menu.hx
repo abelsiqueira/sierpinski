@@ -20,6 +20,8 @@ class Menu extends Entity {
   private var speed_m_rect:Rectangle;
   private var refresh_rect:Rectangle;
   private var click_rect:Rectangle;
+  private var thickness_rects:Array<Rectangle>;
+  private var thickness_canvas:Array<Canvas>;
 
   private var sierpinski:Sierpinski;
 
@@ -76,6 +78,17 @@ class Menu extends Entity {
     np_m_rect = new Rectangle(HXP.height+d, 350, w, h);
     refresh_rect = new Rectangle(HXP.width - w - d, HXP.height-h-d, w, h);
     click_rect = new Rectangle(HXP.height + d, HXP.height-h-d, w, h);
+    
+    thickness_rects = new Array<Rectangle>();
+    thickness_canvas = new Array<Canvas>();
+
+    var i:Int;
+
+    for (i in 0...3) {
+      thickness_rects.push(new Rectangle(HXP.height +
+            (HXP.width-HXP.height)/2 - 16 + 50*(i-1), 350 + h + 2*d, 32, 32));
+      thickness_canvas.push(new Canvas(33, 33));
+    }
 
     np_plus.x = np_p_rect.x;
     np_plus.y = np_p_rect.y;
@@ -100,6 +113,26 @@ class Menu extends Entity {
     addGraphic(np_text);
     addGraphic(nv_text);
     addGraphic(speed_bar);
+    for (i in 0...3) {
+      thickness_canvas[i].x = thickness_rects[i].x;
+      thickness_canvas[i].y = thickness_rects[i].y;
+      addGraphic(thickness_canvas[i]);
+    }
+    setThickness(0);
+  }
+
+  private function setThickness(p:Int) {
+    for (i in 0...3) {
+      thickness_canvas[i].x = thickness_rects[i].x;
+      thickness_canvas[i].y = thickness_rects[i].y;
+      thickness_canvas[i].fill(new Rectangle( 0, 0,33,33), 0xffffff);
+      thickness_canvas[i].fill(new Rectangle( 1, 1,31,31), 0);
+      thickness_canvas[i].fill(new Rectangle(15-2*i,15-2*i, 3+4*i, 3+4*i), 0xff0000);
+      addGraphic(thickness_canvas[i]);
+    }
+    thickness_canvas[p].fill(new Rectangle( 0, 0,33,33), 0x00ff00);
+    thickness_canvas[p].fill(new Rectangle( 3, 3,27,27), 0);
+    thickness_canvas[p].fill(new Rectangle(15-2*p,15-2*p, 3+4*p, 3+4*p), 0xff0000);
   }
 
   override public function update() {
@@ -136,6 +169,14 @@ class Menu extends Entity {
       sierpinski.clear_drawing();
     } else if (click_rect.contains(mx, my)) {
       sierpinski.waitForClick();
+    } else {
+      var i:Int;
+      for (i in 0...3) {
+        if (thickness_rects[i].contains(mx, my)) {
+          setThickness(i);
+          sierpinski.setThickness(i+1);
+        }
+      }
     }
   }
 
